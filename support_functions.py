@@ -49,6 +49,11 @@ def process_raw_data(raw_data):
     feature_names_table = []
     feature_values_table = []
 
+    # Rows in the data have an uneven number of features.
+    # We need to chose the features that we want. We will chose the features by names.
+    # For this we need a dictionary.
+    feature_names_value_connection_dict = {}
+
     # Different rows have different length. We store the distribution of the lengths.
     number_of_rows_dict = {}
     feature_names_dict = {}
@@ -77,6 +82,20 @@ def process_raw_data(raw_data):
 
         feature_values_table.append(feature_row)
 
+        nr = len(feature_row)
+        assert nf == nr, "ERROR: The number of feature names is not equal to the number of feature values!"
+
+        # Connect the feature names with their values.
+        for k in range(nf):
+            name = feature_names[k]
+            value = feature_row[k]
+            feature_names_value_connection_dict[name] = value
+
+        logger.debug(" --- --- --- Names <-> value connection --- --- --- ")
+        logger.debug(feature_names_value_connection_dict)
+        logger.debug(" --- --- --- -------------------------- --- --- --- ")
+
+    # Print some statistics about the features that we have.
     print_dict(number_of_rows_dict)
 
     # Print feature_names_dict. Here we would like to also print the number of elements of
