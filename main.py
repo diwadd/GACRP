@@ -1,5 +1,7 @@
 import logging
 
+import numpy as np
+
 import support_functions as sf
 import global_constants as gc
 
@@ -27,10 +29,12 @@ if __name__ == "__main__":
 
     logger.debug("features: {0}".format(raw_data[0]))
 
-    # sf.process_raw_data_row(raw_data[1])
-    # sf.process_raw_data_row(raw_data[2])
-    # sf.process_raw_data_row(raw_data[3])
+    feature_names_table, feature_values_table = sf.process_raw_data(raw_data)
 
-    # d = sf.convert_json_string_to_dict(raw_data[1][2].replace("\\", "\\\\"))
+    logger.info("Feature names {0}\n".format(feature_names_table))
+    logger.info(feature_values_table[0])
+    logger.info(feature_values_table[1])
 
-    sf.process_raw_data(raw_data)
+    sf.save_feature_values_table_as_csv_file(feature_names_table,
+                                             feature_values_table,
+                                             "processed_features.csv")
