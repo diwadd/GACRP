@@ -69,6 +69,9 @@ TRAIN_FEATURE_INDEX = {"adContent": 0,
                        "visitStartTime": 54,
                        "visits": 55}
 
+# The following features are present in train data and are not present in test data:
+# - transactionRevenue - this is what we are trying to predict
+# - campaignCode
 TEST_FEATURE_INDEX = {"adContent": 0,
                       "adNetworkType": 1,
                       "bounces": 2,
