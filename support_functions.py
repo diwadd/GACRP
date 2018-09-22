@@ -52,6 +52,7 @@ def process_raw_data(raw_data):
     # Different rows have different length. We store the distribution of the lengths.
     number_of_rows_dict = {}
     feature_names_dict = {}
+    feature_set = set()
     for i in range(1, n):
         raw_data_row = raw_data[i]
         feature_names, feature_row = process_raw_data_row(raw_data_row)
@@ -62,7 +63,12 @@ def process_raw_data(raw_data):
         else:
             number_of_rows_dict[nf] = 1
 
+        # For each nf we store the features in set in a dict entry feature_names_dict[nf]
         pass_feature_names_to_dict(feature_names, feature_names_dict)
+
+        # We keep track of all the features in the data set in features_set.
+        for j in range(nf):
+            feature_set.add(feature_names[j])
 
         logger.info("we are at row {0}, number of features {1}".format(i, nf))
 
@@ -82,6 +88,12 @@ def process_raw_data(raw_data):
         for f in val:
             logger.info(f)
 
+    # Print all possible features
+    logger.info("number of all possible features: {0}".format(len(feature_set)))
+
+    all_feature_list = sorted(list(feature_set))
+    for i in range(len(all_feature_list)):
+        print("\"{0}\": {1},".format(all_feature_list[i], i))
 
     return feature_names_table, feature_values_table
 
