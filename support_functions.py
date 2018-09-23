@@ -33,7 +33,7 @@ def read_csv_file(filename):
     return raw_data
 
 
-def process_raw_data(raw_data):
+def process_raw_data(raw_data, features_to_take):
     """
     Takes the data from the csv file and converts them into
     a python list.
@@ -46,7 +46,7 @@ def process_raw_data(raw_data):
 
     logger.debug("raw_data features: {0}".format(raw_data[0]))
 
-    feature_names_table = []
+    feature_names_table = features_to_take
     feature_values_table = []
 
     # Rows in the data have an uneven number of features.
@@ -77,11 +77,6 @@ def process_raw_data(raw_data):
 
         logger.info("we are at row {0}, number of features {1}".format(i, nf))
 
-        if i == 1:
-            feature_names_table = feature_names
-
-        feature_values_table.append(feature_row)
-
         nr = len(feature_row)
         assert nf == nr, "ERROR: The number of feature names is not equal to the number of feature values!"
 
@@ -94,6 +89,18 @@ def process_raw_data(raw_data):
         logger.debug(" --- --- --- Names <-> value connection --- --- --- ")
         logger.debug(feature_names_value_connection_dict)
         logger.debug(" --- --- --- -------------------------- --- --- --- ")
+
+        # Take only the features that we want.
+        nftt = len(features_to_take)
+        reduced_feature_row = [None for i in range(nftt)]
+        for l in range(nftt):
+            if features_to_take[l]in feature_names_value_connection_dict:
+                reduced_feature_row[l] = feature_names_value_connection_dict[features_to_take[l]]
+            else:
+                reduced_feature_row[l] = "None"
+
+        feature_values_table.append(reduced_feature_row)
+
 
     # Print some statistics about the features that we have.
     print_dict(number_of_rows_dict)
